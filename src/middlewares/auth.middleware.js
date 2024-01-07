@@ -12,8 +12,16 @@ export const authUser = (req, res, next) => {
         })
     }
 
-    const payload = jwt.verify(token, JWT.SECRET)
-    req.user = payload
+    try {
+        const payload = jwt.verify(token, JWT.SECRET)
 
-    next()
+        req.user = payload
+
+        next()
+    } catch (e) {
+        return res.status(401).json({
+            status: false,
+            message: e.message
+        })
+    }
 }
